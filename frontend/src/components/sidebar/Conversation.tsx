@@ -10,6 +10,7 @@ const Conversation = ({conversation,lastIdx,emoji}) => {
   const isOnline = onlineUsers.includes(conversation._id);
   console.log("Conversation ID:", conversation._id);
   console.log("Online Users:", onlineUsers);
+  console.log("Profile Pic URL:", conversation.profilePic);
 
   return (
     <>

@@ -20,15 +20,18 @@ export const signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
         // https://avatar-placeholder.iran.liara.run/
 
-        const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`
-        const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`
+        // const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`
+        // const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`
+
+        const profilePic = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
 
         const newUser = new User({
             fullName,
             username,
             password: hashedPassword,
             gender,
-            profilePic: gender === "male" ? boyProfilePic : girlProfilePic
+            // profilePic: gender === "male" ? boyProfilePic : girlProfilePic
+            profilePic
         })
 
         if (newUser) {
@@ -53,27 +56,40 @@ export const signup = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    try{
-        const {username , password} = req.body;
-        const user = await User.findOne({username});
-        const isPasswordCorrect = await bcrypt.compare(password , user?.password || '');
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
 
-        if(!user || !isPasswordCorrect){
-            res.status(400).json({ error: "Invalid credentials" })
+        // 1. MUST USE 'return' HERE
+        if (!user) {
+            return res.status(400).json({ error: "Invalid username" });
         }
 
-        generateTokenandSetCookie(user._id , res);
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        // 2. MUST USE 'return' HERE
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ error: "Invalid password" });
+        }
+
+        // Generate token and send final response
+        generateTokenandSetCookie(user._id, res);
+
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
             username: user.username,
             profilePic: user.profilePic,
-        })
-    }catch (e) {
-        console.log("Error in login Controler : ", e.message);
-        res.status(500).json({ error: "Internal server error" })
+        });
+
+    } catch (error) {
+        console.log("Error in login controller", error.message);
+        // 3. Ensure this only runs if no other response was sent
+        if (!res.headersSent) {
+            res.status(500).json({ error: "Internal Server Error" });
+        }
     }
-}
+};
 
 export const logout = (req, res) => {
     try {
