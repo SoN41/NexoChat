@@ -5,6 +5,7 @@ import Home from './pages/home/Home'
 import SignUp from './pages/signup/SignUp'
 import { Toaster } from 'react-hot-toast';
 import { useAuthContext } from './context/AuthContext';
+import Settings from './pages/settings/settings';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={ authUser ? <Home /> : < Navigate to='/login' /> } />
         <Route path='/login' element={ authUser ? < Navigate to='/' /> : <Login />} />
         <Route path='/signup' element={ authUser ? < Navigate to='/' /> : < SignUp /> } />
+        <Route path='/settings' element={authUser ? < Settings /> : <Navigate to='/login' />} />
       </Routes>
       <Toaster />
     </div>
