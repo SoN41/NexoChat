@@ -1,28 +1,23 @@
-const GenderBox = ({onCheckboxChange , selectedGender}) => {
-  return (
-    <div>
-        <div className="flex">
-            <div className="form-control">
-                <label className={`label gap-2 cursor-pointer ${selectedGender === 'male' ? 'selected': ''} `}>
-                    <span className="label-tex text-blue-500">Male</span>
-                    <input type="checkbox" className=" checkbox border-slate-900" 
-                        checked={selectedGender == 'male'}
-                        onChange={() => onCheckboxChange("male")}
-                    />
-                </label>
-            </div>
-            <div className="form-control">
-                <label className={`label gap-2 cursor-pointer ${selectedGender === 'female' ? 'selected': ''}`}>
-                    <span className="label-text text-blue-500">Female</span>
-                    <input type="checkbox" className=" checkbox border-slate-900" 
-                        checked={selectedGender == 'female'}
-                        onChange={() => onCheckboxChange("female")}
-                    />
-                </label>
-            </div>
-        </div>
-    </div>
-  )
-}
-
-export default GenderBox
+const GenderBox = ({ onCheckboxChange, selectedGender }) => {
+    return (
+      <div className="flex gap-4 mt-2">
+          <label className={`flex items-center gap-2 cursor-pointer p-2 rounded-lg border transition-all ${selectedGender === 'male' ? 'border-blue-500 bg-blue-500/10' : 'border-gray-600 hover:border-gray-500'}`}>
+              <input type="checkbox" className="checkbox checkbox-sm checkbox-info border-gray-500" 
+                  checked={selectedGender === 'male'}
+                  onChange={() => onCheckboxChange("male")}
+              />
+              <span className="text-sm font-medium text-gray-300">Male</span>
+          </label>
+          
+          <label className={`flex items-center gap-2 cursor-pointer p-2 rounded-lg border transition-all ${selectedGender === 'female' ? 'border-blue-500 bg-blue-500/10' : 'border-gray-600 hover:border-gray-500'}`}>
+              <input type="checkbox" className="checkbox checkbox-sm checkbox-info border-gray-500" 
+                  checked={selectedGender === 'female'}
+                  onChange={() => onCheckboxChange("female")}
+              />
+              <span className="text-sm font-medium text-gray-300">Female</span>
+          </label>
+      </div>
+    )
+  }
+  
+export default GenderBox;

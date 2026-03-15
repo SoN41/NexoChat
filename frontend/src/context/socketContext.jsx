@@ -15,16 +15,20 @@ export const SocketContextProvider = ({children}) => {
 
     useEffect(() => {
         if(authUser){
-            const socket = io("http://localhost:5000",{
+            const newSocket = io("http://localhost:5000",{
                 query:{
-                    userId : authUser._id,
+                    // FIX: Use authUser.uid for Firebase users, 
+                    // fallback to _id just in case you still have old local users
+                    userId : authUser.uid || authUser._id, 
                 }
             });
-            setSocket(socket);
-            socket.on("getOnlineUsers" , (users) => {
+            setSocket(newSocket);
+            
+            newSocket.on("getOnlineUsers" , (users) => {
                 setOnlineUsers(users);
             })
-            return () => socket.close();
+            
+            return () => newSocket.close();
         } else {
             if(socket){
                 socket.close();

@@ -1,33 +1,51 @@
-import { useState } from "react"
-import useConversation from "../zustand/useConversation"
+import { useState } from "react";
+import useConversation from "../zustand/useConversation";
 import toast from "react-hot-toast";
+import { auth } from "../firebase/firebase.config"; 
+import { useAuthContext } from "../context/AuthContext"; // Import AuthContext
 
 const useSendMessage = () => {
+    const [loading, setLoading] = useState(false);
+    const { messages, setMessages, selectedConversation } = useConversation();
+    const { authUser } = useAuthContext(); // Get current user state
 
-    const [loading , setLoading] = useState(false)
-    const {messages , setMessages , selectedConversation} = useConversation();
-
-    const sendMessage = async(message) =>{
-        setLoading(true)
+    const sendMessage = async (message) => {
+        setLoading(true);
         try {
-            const res = await fetch(`/api/messages/send/${selectedConversation._id}`,{
-                method:'POST',
-                headers: {
-                    'Content-Type' : 'application/json'
-                },
-                body : JSON.stringify({message})
-            })
-            const data = await res.json();
-            if(data.error) throw new Error(data.error)
+            if (!authUser) throw new Error("You must be logged in to send a message.");
 
-            setMessages([...messages,data])
+            // Always include Content-Type for POST requests
+            let headers = {
+                'Content-Type': 'application/json'
+            };
+
+            // If it's a Firebase user, append the Authorization token
+            if (authUser?.uid) {
+                const user = auth.currentUser;
+                if (user) {
+                    const token = await user.getIdToken();
+                    headers["Authorization"] = `Bearer ${token}`;
+                }
+            }
+
+            const res = await fetch(`/api/messages/send/${selectedConversation._id}`, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({ message })
+            });
+            
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+
+            setMessages([...messages, data]);
         } catch (error) {
             toast.error(error.message);
-        }finally{
-            setLoading(false)
+        } finally {
+            setLoading(false);
         }
     }
-    return {sendMessage , loading}
+    
+    return { sendMessage, loading };
 }
 
-export default useSendMessage
+export default useSendMessage;

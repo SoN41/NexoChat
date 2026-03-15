@@ -9,10 +9,16 @@ const Settings = () => {
     const { loading, updateProfile } = useUpdateProfile();
     
     const [inputs, setInputs] = useState({
-        fullName: authUser.fullName,
-        username: authUser.username,
+        // Check for MongoDB fullName OR Firebase displayName
+        fullName: authUser.fullName || authUser.displayName || "",
+        
+        // Check for MongoDB username OR create one from Firebase email
+        username: authUser.username || (authUser.email ? authUser.email.split('@')[0] : ""),
+        
         bio: authUser.bio || "",
-        profilePic: authUser.profilePic
+        
+        // Check for MongoDB profilePic OR Firebase photoURL
+        profilePic: authUser.profilePic || authUser.photoURL || ""
     });
 
     const handleSubmit = async (e) => {
@@ -21,82 +27,82 @@ const Settings = () => {
     };
 
     const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setInputs({ ...inputs, profilePic: reader.result }); // This sets the Base64 string
-        };
-        reader.readAsDataURL(file);
-    }
-};
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setInputs({ ...inputs, profilePic: reader.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
-        <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
-            <div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 border border-slate-500'>
-                <div className='flex items-center gap-2 mb-6'>
-                    <Link to='/' className='text-gray-300 hover:text-white transition-all'>
-                        <IoArrowBack size={24} />
+        <div className='flex flex-col items-center justify-center w-full max-w-md mx-auto'>
+            <div className='w-full p-8 rounded-2xl shadow-2xl bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-700'>
+                <div className='flex items-center gap-3 mb-8'>
+                    <Link to='/' className='p-2 rounded-full bg-gray-800 text-gray-300 hover:text-white hover:bg-gray-700 transition-all'>
+                        <IoArrowBack size={20} />
                     </Link>
-                    <h1 className='text-3xl font-semibold text-gray-300'>Edit <span className='text-blue-500'>Profile</span></h1>
+                    <h1 className='text-2xl font-bold text-white'>Edit <span className='text-blue-500'>Profile</span></h1>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Profile Picture Display */}
-                    {/* Profile Picture Display */}
-<div className='flex flex-col items-center mb-4 group'>
-    <div className='w-24 h-24 rounded-full overflow-hidden border-2 border-blue-500 relative bg-slate-800'>
-        {/* ADD THIS IMG TAG BELOW */}
-        <img 
-            src={inputs.profilePic || authUser.profilePic} 
-            alt='user profile' 
-            className="object-cover w-full h-full" 
-        />
-        
-        {/* Label acts as the clickable area for the hidden input */}
-        <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-            <IoCameraOutline size={30} className="text-white" />
-            <input 
-                type="file" 
-                className="hidden" 
-                accept="image/*" 
-                onChange={handleImageChange} 
-            />
-        </label>
-    </div>
-    <p className="text-xs text-gray-400 mt-2 italic text-center">
-        {inputs.profilePic !== authUser.profilePic ? "Preview (Save to confirm)" : "Current Profile Photo"}
-    </p>
-</div>
+                    <div className='flex flex-col items-center mb-2 group'>
+                        <div className='w-28 h-28 rounded-full overflow-hidden border-4 border-gray-700 hover:border-blue-500 transition-colors relative bg-gray-800 shadow-lg'>
+                            <img 
+                                src={inputs.profilePic || authUser.profilePic || "https://avatar.iran.liara.run/public"} 
+                                alt='user profile' 
+                                className="object-cover w-full h-full" 
+                            />
+                            <label className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity backdrop-blur-sm">
+                                <IoCameraOutline size={32} className="text-white drop-shadow-md" />
+                                <input 
+                                    type="file" 
+                                    className="hidden" 
+                                    accept="image/*" 
+                                    onChange={handleImageChange} 
+                                />
+                            </label>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-3 font-medium">
+                            {inputs.profilePic !== authUser.profilePic ? "Preview (Save to confirm)" : "Tap to change photo"}
+                        </p>
+                    </div>
 
-                    <input 
-                        type='text' 
-                        placeholder="Full Name"
-                        className='w-full input input-bordered h-10 bg-slate-700 text-white'
-                        value={inputs.fullName}
-                        onChange={(e) => setInputs({...inputs, fullName: e.target.value})} 
-                    />
+                    <div>
+                        <label className="label p-0 mb-1"><span className="text-sm font-medium text-gray-300">Full Name</span></label>
+                        <input 
+                            type='text' placeholder="Full Name"
+                            className='w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all'
+                            value={inputs.fullName} onChange={(e) => setInputs({...inputs, fullName: e.target.value})} 
+                        />
+                    </div>
 
-                    <input 
-                        type='text' 
-                        placeholder="Username"
-                        className='w-full input input-bordered h-10 bg-slate-700 text-white'
-                        value={inputs.username}
-                        onChange={(e) => setInputs({...inputs, username: e.target.value})} 
-                    />
+                    <div>
+                        <label className="label p-0 mb-1"><span className="text-sm font-medium text-gray-300">Username</span></label>
+                        <input 
+                            type='text' placeholder="Username"
+                            className='w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all'
+                            value={inputs.username} onChange={(e) => setInputs({...inputs, username: e.target.value})} 
+                        />
+                    </div>
 
-                    <textarea 
-                        className='w-full textarea textarea-bordered bg-slate-700 text-white'
-                        placeholder="Bio" 
-                        value={inputs.bio}
-                        onChange={(e) => setInputs({...inputs, bio: e.target.value})} 
-                    />
+                    <div>
+                        <label className="label p-0 mb-1"><span className="text-sm font-medium text-gray-300">Bio</span></label>
+                        <textarea 
+                            className='w-full textarea textarea-bordered bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all resize-none h-24'
+                            placeholder="Tell us about yourself..." 
+                            value={inputs.bio} onChange={(e) => setInputs({...inputs, bio: e.target.value})} 
+                        />
+                    </div>
 
                     <button 
-                        className='btn btn-block btn-sm bg-blue-600 hover:bg-blue-700 border-none text-white' 
+                        className='btn btn-block h-11 bg-blue-600 hover:bg-blue-700 border-none text-white mt-6 shadow-lg shadow-blue-500/30' 
                         disabled={loading}
                     >
-                        {loading ? <span className="loading loading-spinner"></span> : "Save Changes"}
+                        {loading ? <span className="loading loading-spinner text-white"></span> : "Save Changes"}
                     </button>
                 </form>
             </div>
