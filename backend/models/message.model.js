@@ -1,22 +1,26 @@
 import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
-    senderId:{
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    reciverId:{
+    reciverId: { // Keeping your original spelling here
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    message:{
+    message: {
         type: String,
-        required: true
+        default: "" // Removed required: true so users can send just an image
+    },
+    image: {
+        type: String,
+        default: "" // This will store the secure URL from Cloudinary
     }
-},{timestamps : true} );    //time stamps adds created at and updated at
+}, { timestamps: true }); // timestamps adds createdAt and updatedAt
 
-const Message = mongoose.model("Message" , messageSchema);
+const Message = mongoose.model("Message", messageSchema);
 
 export default Message;

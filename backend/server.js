@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes.js"
 
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from "./socket/socket.js";
+import cloudinary from "./config/cloudinary.js";
 
 const PORT = process.env.PORT || 5001;
 console.log("THIS IS " + process.env.PORT);
@@ -16,7 +17,8 @@ console.log("THIS IS " + process.env.PORT);
 
 app.use(express.json());    // to parse the incoming requests with JSON payloads (from req.body)
 app.use(cookieParser());
-
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use('/api/auth' , authRoutes);
 app.use('/api/messages' , messageRoutes);
 app.use('/api/users' , userRoutes);

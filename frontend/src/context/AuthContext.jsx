@@ -4,27 +4,33 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export const AuthContext = createContext();
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
     return useContext(AuthContext);
 };
 
 export const AuthContextProvider = ({ children }) => {
-    const [authUser, setAuthUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Added to prevent flickering
+    // 1. Initialize state by checking localStorage FIRST for custom backend users
+    const [authUser, setAuthUser] = useState(() => {
+        const localUser = localStorage.getItem("chat-user");
+        return localUser ? JSON.parse(localUser) : null;
+    });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // This listener automatically detects if a user is logged in
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setAuthUser(user);
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser) {
+                // If Firebase recognizes a Google user, use that
+                setAuthUser(firebaseUser);
             } else {
-                setAuthUser(null);
+                // If Firebase has no user, double-check localStorage so we don't accidentally overwrite a custom login with 'null'
+                const localUser = localStorage.getItem("chat-user");
+                if (!localUser) {
+                    setAuthUser(null);
+                }
             }
             setLoading(false);
         });
 
-        // Cleanup subscription on unmount
         return () => unsubscribe();
     }, []);
 

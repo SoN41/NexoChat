@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getUsersForSidebar = async(req,res) => {
     try {
@@ -22,11 +23,17 @@ export const updateUserProfile = async (req, res) => {
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).json({ error: "User not found" });
 
+		let profilePicUrl = user.profilePic;
+        if (profilePic && profilePic.startsWith("data:image")) {
+            const uploaded = await cloudinary.uploader.upload(profilePic);
+            profilePicUrl = uploaded.secure_url;
+        }
+
 		// Update fields if they are provided in the request
 		user.fullName = fullName || user.fullName;
 		user.username = username || user.username;
 		user.bio = bio || user.bio;
-		user.profilePic = profilePic || user.profilePic;
+		user.profilePic = profilePic || user.profilePic || profilePicUrl;
 
 		await user.save();
 

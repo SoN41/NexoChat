@@ -31,7 +31,7 @@ const useSendMessage = () => {
             const res = await fetch(`/api/messages/send/${selectedConversation._id}`, {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify({ message })
+                body: JSON.stringify( message )
             });
             
             const data = await res.json();

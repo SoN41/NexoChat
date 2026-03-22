@@ -10,6 +10,8 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+app.use(express.json({ limit: "50mb" })); 
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 export const getReceiverSocketId = (receiverId) => {
     return userSocketMap[receiverId];
