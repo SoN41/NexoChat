@@ -4,10 +4,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {},
   },
-  // eslint-disable-next-line no-undef
   plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["dark", "light"],
+  },
 }

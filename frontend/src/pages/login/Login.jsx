@@ -27,7 +27,6 @@ const Login = () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
-            
             setAuthUser(user);
             toast.success(`Welcome ${user.displayName}!`);
             navigate("/");
@@ -41,39 +40,39 @@ const Login = () => {
 
     return (
         <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
-            <div className="p-8 w-full rounded-2xl shadow-2xl bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-700">
-                <h2 className="text-3xl font-bold text-center text-white mb-6">
+            <div className="p-8 w-full rounded-2xl shadow-2xl bg-base-100 border border-base-300">
+                <h2 className="text-3xl font-bold text-center text-base-content mb-6">
                     Login to <span className="text-blue-500">NexoChat</span>
                 </h2>
                 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="label p-0 mb-1">
-                            <span className="text-sm font-medium text-gray-300">Username</span>
+                            <span className="text-sm font-medium text-base-content/70">Username</span>
                         </label>
                         <input type="text" placeholder="Enter Username" 
-                            className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div>
                         <label className="label p-0 mb-1">
-                            <span className="text-sm font-medium text-gray-300">Password</span>
+                            <span className="text-sm font-medium text-base-content/70">Password</span>
                         </label>
                         <input type="password" placeholder="Enter Password" 
-                            className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
-                    <div className="divider text-gray-500 text-sm py-2">OR</div>
+                    <div className="divider text-base-content/50 text-sm py-2">OR</div>
 
                     <button 
                         type="button"
                         onClick={handleGoogleSignIn}
-                        className="btn btn-block h-11 bg-white hover:bg-gray-100 text-gray-800 border-none flex items-center gap-3 font-medium transition-all"
+                        className="btn btn-block h-11 bg-base-200 hover:bg-base-300 text-base-content border-base-300 flex items-center gap-3 font-medium transition-all"
                         disabled={loading}
                     >
                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
@@ -81,7 +80,7 @@ const Login = () => {
                     </button>
 
                     <div className="text-center mt-4">
-                        <Link to="/signup" className="text-sm text-gray-400 hover:text-blue-500 hover:underline transition-colors">
+                        <Link to="/signup" className="text-sm text-base-content/50 hover:text-blue-500 hover:underline transition-colors">
                             Don't have an account? Sign up
                         </Link>
                     </div>

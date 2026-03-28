@@ -18,45 +18,45 @@ const SignUp = () => {
 
     return (
         <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
-            <div className="w-full p-8 rounded-2xl shadow-2xl bg-gray-900 bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-700">
-                <h1 className="text-3xl font-bold text-center text-white mb-6">
+            <div className="w-full p-8 rounded-2xl shadow-2xl bg-base-100 border border-base-300">
+                <h1 className="text-3xl font-bold text-center text-base-content mb-6">
                     Join <span className="text-blue-500">NexoChat</span>
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="label p-0 mb-1">
-                            <span className="text-sm font-medium text-gray-300">Full Name</span>
+                            <span className="text-sm font-medium text-base-content/70">Full Name</span>
                         </label>
                         <input type="text" placeholder="John Doe" 
-                            className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                             value={inputs.fullName} onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
                         />
                     </div>
                     <div>
                         <label className="label p-0 mb-1">
-                            <span className="text-sm font-medium text-gray-300">Username</span>
+                            <span className="text-sm font-medium text-base-content/70">Username</span>
                         </label>
                         <input type="text" placeholder="johndoe" 
-                            className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                            className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                             value={inputs.username} onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="label p-0 mb-1">
-                                <span className="text-sm font-medium text-gray-300">Password</span>
+                                <span className="text-sm font-medium text-base-content/70">Password</span>
                             </label>
                             <input type="password" placeholder="••••••••" 
-                                className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                                className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                                 value={inputs.password} onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
                             />
                         </div>
                         <div>
                             <label className="label p-0 mb-1">
-                                <span className="text-sm font-medium text-gray-300">Confirm</span>
+                                <span className="text-sm font-medium text-base-content/70">Confirm</span>
                             </label>
                             <input type="password" placeholder="••••••••" 
-                                className="w-full input input-bordered h-11 bg-gray-800 border-gray-600 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                                className="w-full input input-bordered h-11 bg-base-200 text-base-content focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                                 value={inputs.confirmPassword} onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
                             />
                         </div>
@@ -65,7 +65,7 @@ const SignUp = () => {
                     <GenderBox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
                     
                     <div className="text-center mt-2">
-                        <Link to="/login" className="text-sm text-gray-400 hover:text-blue-500 hover:underline transition-colors">
+                        <Link to="/login" className="text-sm text-base-content/50 hover:text-blue-500 hover:underline transition-colors">
                             Already have an account? Login
                         </Link>
                     </div>

@@ -5,15 +5,13 @@ import SettingsBtn from "./SettingsBtn";
 
 const Sidebar = () => {
   return (
-    <div className="border-r border-slate-500 p-4 flex flex-col">
+    <div className="border-r border-base-300 bg-base-200 p-4 flex flex-col">
         <SearchInput />
         <div className="divider px-3"></div>
         <Conversations />
-        
-        {/* Action area at the bottom */}
         <div className="mt-auto flex items-center justify-between">
             <LogoutBtn />
-            < SettingsBtn />
+            <SettingsBtn />
         </div>
     </div>
   );
